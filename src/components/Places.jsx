@@ -1,6 +1,6 @@
-export default function Places({ title, places, fallbackText, onSelectPlace,isLoading,loadingText }) {
+export default function Places({ title, places, fallbackText, onSelectPlace, isLoading, loadingText }) {
   console.log(JSON.stringify(places));
-  
+
   // true ? 'hello': null
   // true && 'hello'
   return (

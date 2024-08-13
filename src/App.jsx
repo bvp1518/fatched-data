@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback,useEffect } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 
 import Places from './components/Places.jsx';
 import Modal from './components/Modal.jsx';
@@ -15,24 +15,24 @@ function App() {
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState();
 
-  
+
   const [errorUpdatingPlaces, setErrorUpdatingPlaces] = useState();
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-useEffect(() => {
-  async function fetchPlaces() {
-    setIsFetching(true);
-    try{
-      const places = await fetchUserPlaces();
-      setUserPlaces(places);
-     }catch(error){
-       setError({message: error.message || 'Failed to fetch user places.'});
-     }
-     setIsFetching(false);
+  useEffect(() => {
+    async function fetchPlaces() {
+      setIsFetching(true);
+      try {
+        const places = await fetchUserPlaces();
+        setUserPlaces(places);
+      } catch (error) {
+        setError({ message: error.message || 'Failed to fetch user places.' });
+      }
+      setIsFetching(false);
     }
 
-  fetchPlaces();
-}, []);
+    fetchPlaces();
+  }, []);
 
 
   function handleStartRemovePlace(place) {
@@ -68,12 +68,13 @@ useEffect(() => {
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current.id)
     );
 
-    try{
-      await updateUserPlaces(userPlaces.filter((place)=>place.id !== selectedPlace.current.id)
-     );
+    try {
+      await updateUserPlaces(userPlaces.filter((place) => place.id !== selectedPlace.current.id)
+      );
     } catch (error) {
       setUserPlaces(userPlaces);
-      setErrorUpdatingPlaces({message: error.message || 'Failed to delete place.',
+      setErrorUpdatingPlaces({
+        message: error.message || 'Failed to delete place.',
 
       })
     }
@@ -89,12 +90,12 @@ useEffect(() => {
     <>
       <Modal open={errorUpdatingPlaces} onClose={handleError}>
         {errorUpdatingPlaces && (
-        <Error
-          title="An error occured"
-          message={errorUpdatingPlaces.message}
-          onConfirm={handleError}
-        />
-      )}
+          <Error
+            title="An error occured"
+            message={errorUpdatingPlaces.message}
+            onConfirm={handleError}
+          />
+        )}
       </Modal>
 
       <Modal open={modalIsOpen} onClose={handleStopRemovePlace}>
@@ -113,7 +114,7 @@ useEffect(() => {
         </p>
       </header>
       <main>
-        {error && <Error title="An error occured!" message={error.message} /> }
+        {error && <Error title="An error occured!" message={error.message} />}
         {!error && <Places
           title="I'd like to visit ..."
           fallbackText="Select the places you would like to visit below."

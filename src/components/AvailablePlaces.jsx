@@ -8,39 +8,39 @@ import { fetchAvailablePlaces } from "../http.js";
 // const places =  localStorage.getItem('places');
 
 export default function AvailablePlaces({ onSelectPlace }) {
-  
+
   const [isFetching, setIsFetching] = useState(false);
   const [availablePlaces, setAvailablePlaces] = useState([]);
   const [error, setError] = useState();
 
-useEffect(() => {
-  async function fetchPlaces() {
-  setIsFetching(true);
+  useEffect(() => {
+    async function fetchPlaces() {
+      setIsFetching(true);
 
-  try{
-   const places = await fetchAvailablePlaces();  
+      try {
+        const places = await fetchAvailablePlaces();
 
-      navigator.geolocation.getCurrentPosition((position) => {
-       const sortedPlaces = sortPlacesByDistance(
-        places,
-        position.coords.latitude,
-        position.coords.longitude
-      );
-        setAvailablePlaces(sortedPlaces);
+        navigator.geolocation.getCurrentPosition((position) => {
+          const sortedPlaces = sortPlacesByDistance(
+            places,
+            position.coords.latitude,
+            position.coords.longitude
+          );
+          setAvailablePlaces(sortedPlaces);
+          setIsFetching(false);
+        });
+
+      } catch (error) {
+        setError({ message: error.message || 'Could not fetch places,please try again later.' });
         setIsFetching(false);
-              });
-
-    } catch(error){
-      setError({message: error.message || 'Could not fetch places,please try again later.' });
-      setIsFetching(false);
+      }
     }
-}
-fetchPlaces();
+    fetchPlaces();
   }, []);
 
-  if(error){
+  if (error) {
     return <Error title="An error occured!" message={error.message} />
-  
+
   }
 
 
@@ -55,7 +55,7 @@ fetchPlaces();
   //   });
   // }, []);
 
-   
+
   return (
     <Places
       title="Available Places"
